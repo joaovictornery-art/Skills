@@ -1,0 +1,6 @@
+interface:
+  display_name: "Code Quality Check"
+  short_description: "Risk-scaled review gate with correction guidance"
+  default_prompt: "Use $code-quality-check to run a focused review-only quality gate, recommend a correction and validation for every finding, and report PR/deploy readiness without applying fixes."
+policy:
+  allow_implicit_invocation: false
