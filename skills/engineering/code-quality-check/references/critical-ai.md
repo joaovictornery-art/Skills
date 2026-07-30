@@ -27,8 +27,10 @@ postconditions, and fallback behavior.
 
 - Probe prompt injection in user-controlled and retrieved fields that can alter
   instructions, evidence selection, or tool behavior.
-- Remove PII before prompting, logging, persistence, and error reporting when
-  the product contract does not require it.
+- Minimize and redact PII before prompting, logging, persistence, and error
+  reporting by default. Transmit it only when necessary for the product
+  contract, explicitly authorized, protected in transit and at rest, and
+  consistent with applicable policy.
 - Keep prompts, response bodies, secrets, session IDs, and direct identifiers
   out of logs and user-visible diagnostics.
 

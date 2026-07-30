@@ -10,6 +10,7 @@ Treat data changes as restartable operations with an audit trail.
   stale reads, and schema versions from before and after the change.
 - Validate tenant, locale, publication state, and ownership filters before
   writes.
-- Keep destructive scope explicit and smaller than the selection scope.
+- Keep destructive scope explicit and never broader than the verified
+  selection. Bound the first apply and early batches more narrowly.
 - Verify indexes, access rules, readers, writers, exports, and historical
   records remain compatible with the new schema.

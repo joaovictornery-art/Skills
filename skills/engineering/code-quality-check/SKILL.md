@@ -53,8 +53,10 @@ prerequisite, or `not applicable` with a concrete reason.
 
 Choose one validation tier:
 
-- **Focused** (default): changed-file lint, affected build/typecheck, focused
-  tests, `git diff --check`, and required repository guards.
+- **Focused** (default): run at most one command for each applicable validation
+  class, always at the narrowest affected scope: changed-file lint, affected
+  build/typecheck, focused tests, diff integrity, and required repository
+  guards. Reuse results already observed in the current run.
 - **Expanded**: focused checks plus relevant full suites. Use for cross-cutting
   changes, shared infrastructure, open `P0`/`P1`, an explicit repository rule,
   or a user request.
@@ -62,13 +64,26 @@ Choose one validation tier:
   smoke checks. Use only when deployment readiness is in scope and the target
   environment is accessible.
 
-Keep the selected tier unless observed risk requires escalation. Record
-higher-tier checks as prerequisites rather than running them for completeness.
+Do not run sibling-package or repository-wide suites when a focused equivalent
+covers the changed behavior. Keep the selected tier unless observed risk
+requires escalation, and record each escalation reason. Record higher-tier
+checks as prerequisites rather than running them for completeness.
 
 This step is complete when every changed behavior has a risk profile and the
 validation tier has a stated reason.
 
 ## 3. Establish the baseline
+
+Start an elapsed-time and command-count log before the first validation
+command. Build one deduplicated command plan from the applicable validation
+classes. A command that covers multiple classes counts once; do not run an
+equivalent alternate command unless the first result is ambiguous.
+
+Run only checks known to be local and non-mutating outside the worktree.
+Deploys, migrations, seeders, destructive or environment-connected tests,
+cloud CLIs, and commands that may write to a database or external service
+require explicit user authorization. When command safety is unknown, do not
+run it; record it as a check not run and state the missing assurance.
 
 Run the selected deterministic checks once, cheapest and most focused first.
 Classify each failure as introduced, pre-existing, or unknown; verify a
@@ -82,8 +97,9 @@ every failure has a classification.
 
 Load [references/review.md](references/review.md). Review the complete change
 surface in one integrated pass by default, while keeping the Standards and
-Spec axes distinct. Use independent parallel review only when the user asks
-for it.
+Spec axes distinct. Map each changed behavior to both axes and its profiles
+during that pass; do not repeat file traversal separately for each axis. Use
+independent parallel review only when the user asks for it.
 
 For each plausible defect class, probe the closest boundary or failure path.
 Expand to sibling inputs, roles, retries, or partial failures only when the
@@ -144,4 +160,5 @@ observed in the target environment or are demonstrably not applicable.
 
 Load [references/output.md](references/output.md) and return its complete
 contract. Closing is complete when the ledger, observed validations, checks not
-run, residual risks, and separate PR/deploy decisions support the verdict.
+run, residual risks, command count, elapsed duration, tier escalations, and
+separate PR/deploy decisions support the verdict.

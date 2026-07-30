@@ -1,6 +1,6 @@
 # Critical Financial Profile
 
-Make every amount reproducible from immutable inputs.
+Make every amount reproducible from versioned inputs.
 
 - Use explicit units, currency, rounding rule, effective date, and price
   version.
@@ -12,7 +12,11 @@ Make every amount reproducible from immutable inputs.
   and exchange-rate effects.
 - Probe retries, duplicate events, refunds, reversals, partial processing,
   currency conversion, boundary rounding, and aggregation drift.
-- Keep an immutable ledger as the source of truth; materialized summaries must
-  be rebuildable.
+- For payment, accounting, balance, credit, and settlement flows, keep an
+  immutable ledger as the source of truth; materialized summaries must be
+  rebuildable.
+- For estimators, pricing interfaces, and quota checks, require a versioned,
+  deterministic calculation and reproducible inputs; do not require a ledger
+  unless the result creates or changes a financial obligation.
 - Reconcile aggregates against the provider billing export before calling the
   value actual cost.

@@ -34,3 +34,4 @@ When adding or changing a promoted skill:
 3. Update the bucket and top-level catalogs.
 4. Verify every relative link resolves.
 5. Confirm user/model invocation metadata remains intentional.
+6. Run `python scripts/validate_repo.py`.
