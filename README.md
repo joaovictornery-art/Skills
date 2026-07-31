@@ -32,8 +32,8 @@ Skills for code and release work.
   readiness.
 
 - **[frontend-orthography-check](./skills/engineering/frontend-orthography-check/SKILL.md)** —
-  Correct high-confidence spelling and encoding issues in changed user-facing
-  frontend text without rewriting the copy.
+  Scan, review, and correct high-confidence orthography issues in changed
+  frontend UI text without rewriting the copy.
 
 - **[prepare-branch-worktree](./skills/engineering/prepare-branch-worktree/SKILL.md)** —
   Isolate a task safely on the correct branch and worktree at start or before a

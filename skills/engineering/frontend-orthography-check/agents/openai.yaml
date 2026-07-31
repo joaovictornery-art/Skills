@@ -1,6 +1,6 @@
 interface:
   display_name: "Frontend Orthography Check"
-  short_description: "Fix spelling in changed user-facing UI text"
-  default_prompt: "Use $frontend-orthography-check to fix spelling in the changed user-facing UI text."
+  short_description: "Review and fix spelling in changed frontend UI text"
+  default_prompt: "Use $frontend-orthography-check to scan changed user-facing UI text, inspect enclosing UI units, and apply only high-confidence orthographic corrections."
 policy:
   allow_implicit_invocation: false
