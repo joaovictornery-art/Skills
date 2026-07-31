@@ -1,0 +1,6 @@
+interface:
+  display_name: "Prepare Branch & Worktree"
+  short_description: "Isolate Git work at start and before PRs"
+  default_prompt: "Use $prepare-branch-worktree to isolate this task safely at start or before its PR."
+policy:
+  allow_implicit_invocation: false
