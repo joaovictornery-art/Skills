@@ -31,13 +31,21 @@ specialized risk checks. The model should not start that work implicitly.
 ## Validation tiers
 
 - **Focused** is the default: changed-file lint, affected build or typecheck,
-  focused tests, diff checks, and repository guards.
+  focused tests, diff checks, and repository guards. It runs at most one
+  command per applicable validation class and uses the narrowest affected
+  scope.
 - **Expanded** adds relevant full suites for cross-cutting or high-impact
   changes.
 - **Deployment** adds target-environment prerequisites and smoke checks.
 
 The tier escalates only when observed risk, repository policy, or the user
-requires it.
+requires it. Results already observed in the same run are reused, and every
+escalation has a recorded reason.
+
+Validation commands are local and non-mutating by default. Deployments,
+migrations, seeders, destructive or environment-connected tests, cloud CLIs,
+and other commands that may write to external systems require explicit user
+authorization.
 
 ## Risk profiles
 
@@ -54,7 +62,9 @@ correction, and a validation check. The final verdict is one of:
 - `PASS WITH CAVEATS`
 - `BLOCKED`
 
-Pull-request readiness and deployment readiness remain independent.
+Pull-request readiness and deployment readiness remain independent. The report
+also includes elapsed duration, commands run, and tier escalation reasons so
+quality coverage and operating cost can be calibrated over time.
 
 ## Where it fits
 

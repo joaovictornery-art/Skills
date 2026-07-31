@@ -3,7 +3,7 @@
 List open findings first:
 
 ```text
-[P0 | P1 | P2 | P3] <short title>
+[CQ-001][P0 | P1 | P2 | P3] <short title>
 Problem: <what is wrong>
 Impact: <what can happen and who is affected>
 Evidence: <file/line, command output, or external prerequisite>
@@ -21,6 +21,9 @@ Tier: focused | expanded | deployment
 Profiles: standard, ...
 Fixed point: <ref>
 Review mode: integrated | independent
+Duration: <elapsed time>
+Commands run: <count>
+Tier escalations: <reason or "none">
 
 Findings: <found> found, <fixed> fixed, <open> open
 Validation:
