@@ -72,18 +72,24 @@ listed under `What I could not confirm`.
 Use technical severity as supporting detail:
 
 - **Critical:** active credential, private key, or immediately usable access.
-- **High:** personal identifier, confidential operational information,
-  sensitive visual, or public history containing removed sensitive material.
+- **High:** government or financial personal identifier, confidential
+  operational information, sensitive visual, or public history containing
+  removed sensitive material.
 - **Medium:** unsafe configuration, production ambiguity, authorization gap,
   generated artifact, or unsupported public claim.
-- **Low:** professional polish or intentional-publication question without
-  direct exposure.
+- **Low:** professional polish, public commit-author email, or another
+  intentional-publication question without direct exposure.
 
 Then calibrate the recommendation to the real context: repository visibility,
 likely audience, whether the value is active, whether the project drives a live
 application, and whether the issue exists in the current tree or only in
 history. Do not turn a low-reach or already-contained issue into a migration
 project without explaining the tradeoff.
+
+Do not classify a commit-author email as high risk by default. Explain that it
+is public metadata and ask whether the exposure is intentional; raise severity
+only when evidence shows that the address creates a concrete security or
+privacy risk.
 
 Recommend the smallest change that adequately reduces the risk. Prefer a local
 edit over a repository migration when it is sufficient. Treat changing a live
@@ -94,7 +100,7 @@ repository, deployment, or public profile as a separate decision.
 Reply in the user's language. Lead with one verdict:
 
 - `No blocking issue found`
-- `Review these items before publishing`
+- `Review these items`
 - `Keep private for now`
 
 For each distinct finding, group duplicates and explain:
