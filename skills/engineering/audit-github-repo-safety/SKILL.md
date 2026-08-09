@@ -1,103 +1,113 @@
 ---
 name: audit-github-repo-safety
-description: Manually gate a GitHub repository before public release or recruiter sharing.
+description: Read-only audit of a GitHub repository with plain-language risks and recommendations.
 disable-model-invocation: true
 ---
 
 # Audit GitHub repository safety
 
-Use this skill as a **release gate**. Apply the same evidence sequence on every run; a clean text scan alone never clears a repository for publication.
+Perform an **inspection only**. Explain what is present, what it can cause, and
+the smallest adequate change. Never remediate during this skill.
 
-## Safety boundary
+## Non-negotiable boundary
 
-- Remain read-only by default.
-- Never print a discovered secret or full personal identifier. Report its type and location with the value redacted.
-- Do not commit, push, change visibility, rewrite history, delete a repository, rotate a credential, or create a replacement repository without explicit action-time approval.
-- Before an external change, state the exact `owner/repository` and intended action.
-- Treat user files and unrelated working-tree changes as out of scope.
+- Never edit, create, move, or delete a file.
+- Never install dependencies or run a command that changes repository state.
+- Never commit, push, create a branch or pull request, change visibility or
+  settings, create a repository, rewrite history, revoke a credential, or
+  trigger a deployment.
+- Use only read operations against GitHub and external services.
+- Return the report in the conversation; do not save it as a file.
+- Never print a discovered secret or full personal identifier. Redact the value
+  and identify only its type and location.
+- If the user asks to audit and fix in the same prompt, complete only the audit
+  and state that remediation requires a separate request after review.
 
-## Release gate
+This boundary is absolute, including when a finding is critical or the user has
+previously authorized changes elsewhere in the conversation.
 
-### 1. Establish the target
+## 1. Establish the target
 
-Resolve the repository root, current branch, working-tree status, remotes, GitHub visibility, intended audience, and intended action. Read repository instructions such as `AGENTS.md`, `agents.md`, `CONTRIBUTING.md`, and privacy documentation.
+Resolve the repository root, branch, working-tree status, remotes, GitHub
+visibility, intended audience, and intended publication action. Read repository
+instructions and privacy documentation.
 
-This step is complete only when one local root and, when a remote exists, one `owner/repository` are identified. If either target or intended action is ambiguous, stop before any mutation and ask for the missing fact.
+Complete this step when one repository and one intended audience are known. If
+the target is ambiguous, ask for it without inspecting or changing another
+repository.
 
-### 2. Scan the tree and every reachable commit
+## 2. Run the read-only scan
 
-From any directory, run:
+Run from any directory:
 
 ```powershell
 python "<skill-dir>/scripts/audit_repo.py" --repo "<repository-path>" --history
 ```
 
-Append one `--private-term "<known-name-or-alias>"` per known confidential entity. Use `--json` when another tool must consume the findings. A nonzero exit code means the audit found warnings or higher-severity candidates; inspect the report rather than treating it as a script failure.
+Append `--private-term "<known-name-or-alias>"` for each known confidential
+entity. Use `--json` for structured consumption. A nonzero exit code represents
+findings, not a scanner failure.
 
-The default history limit is 500 commits. If the report says the scan was truncated, count reachable commits and rerun with `--max-history-commits` high enough to cover all of them. The scanner detects candidates, not intent; verify every finding in context.
+If history is truncated, rerun with `--max-history-commits` large enough to
+cover every reachable commit. Complete this step only when the current tree and
+reachable history were scanned or the uncovered range is reported as a limit.
 
-This step is complete only when the current tree and every reachable commit were scanned, or the uncovered range is explicitly reported as a release blocker.
+## 3. Inspect what patterns cannot understand
 
-### 3. Inspect semantic and visual evidence
+Review screenshots, PDFs, recordings, diagrams, exports, logs, fixtures,
+generated client assets, real names, company or customer terms, internal URLs,
+deployment files, and production identifiers. Inspect available GitHub
+descriptions, releases, issues, pull requests, Actions artifacts, Pages,
+deployments, and commit messages with read-only calls.
 
-Account for what patterns cannot judge:
+Check README claims about sanitization, security, production use, ownership,
+impact, scale, and AI against repository evidence and facts supplied by the
+user.
 
-- screenshots, recordings, PDFs, diagrams, exports, fixtures, seeds, logs, caches, and built frontend assets;
-- real names, company marks, customer names, internal URLs, tenant identifiers, proprietary terminology, financial values, schedules, and operational data;
-- `.env.example`, workflows, deployment files, mobile/web bundles, and generated assets that can embed client-side values;
-- repository descriptions, topics, releases, issues, pull requests, Actions artifacts, Pages deployments, and commit messages when GitHub access is available.
+Complete this step when each relevant visual and public claim is reviewed or
+listed under `What I could not confirm`.
 
-Render PDFs page by page and open images. Review current files and historically removed visuals; an unreferenced tracked file remains downloadable. Search known private entity names together with aliases, product names, former names, and spelling variants. If no private-term list is available, record that semantic search limitation without treating the audit as clean evidence.
+## 4. Calibrate the risk
 
-This step is complete only when every visual candidate is classified as reviewed, sensitive, intentionally public, or unavailable, and every available GitHub surface above is checked. Any unavailable mandatory evidence keeps the gate closed.
+Use technical severity as supporting detail:
 
-### 4. Reconcile public claims with evidence
+- **Critical:** active credential, private key, or immediately usable access.
+- **High:** personal identifier, confidential operational information,
+  sensitive visual, or public history containing removed sensitive material.
+- **Medium:** unsafe configuration, production ambiguity, authorization gap,
+  generated artifact, or unsupported public claim.
+- **Low:** professional polish or intentional-publication question without
+  direct exposure.
 
-Search the README and portfolio copy for claims such as:
+Then calibrate the recommendation to the real context: repository visibility,
+likely audience, whether the value is active, whether the project drives a live
+application, and whether the issue exists in the current tree or only in
+history. Do not turn a low-reach or already-contained issue into a migration
+project without explaining the tradeoff.
 
-- `sanitized`, `anonymous`, `privacy-aware`, or `secure`;
-- `production`, `in daily use`, `deployed`, or `used by customers`;
-- `AI agent`, `autonomous`, `evaluation`, `monitoring`, or `tested`;
-- exclusive ownership, leadership, scale, savings, or performance metrics.
+Recommend the smallest change that adequately reduces the risk. Prefer a local
+edit over a repository migration when it is sufficient. Treat changing a live
+repository, deployment, or public profile as a separate decision.
 
-Verify each claim against the repository and facts supplied by the user. Downgrade or mark an unverified claim instead of strengthening it.
+## 5. Return a simple report
 
-This step is complete only when every material security, privacy, production, ownership, impact, scale, and AI claim is supported, qualified, or removed.
+Reply in the user's language. Lead with one verdict:
 
-### 5. Classify findings and close or block the gate
+- `No blocking issue found`
+- `Review these items before publishing`
+- `Keep private for now`
 
-- **Critical:** active credential, private key, authentication secret, or immediately exploitable sensitive access.
-- **High:** valid personal identifier, confidential company/customer data, sensitive screenshot, public history containing removed sensitive material, or false sanitization/security claim.
-- **Medium:** unsafe configuration, authorization mismatch, tracked log/build artifact, missing privacy boundary, or unverified production/ownership claim.
-- **Low:** professional polish or discoverability issue that does not create direct exposure.
+For each distinct finding, group duplicates and explain:
 
-For every finding, report severity, current-tree or history location, why it matters, safest remediation, and whether Codex can perform it with approval or an external owner must act.
+1. **What I found** — plain language first; technical term second when useful.
+2. **What it can cause** — a realistic consequence, without alarmism.
+3. **My recommendation** — the smallest adequate next step.
+4. **Why** — the reasoning and tradeoff.
+5. **Where** — current file, Git history, or GitHub surface.
 
-Choose exactly one verdict:
+List `What I could not confirm` only when it changes the verdict. Put optional
+technical detail after the simple explanation, not before it.
 
-- `Safe to publish`: no critical or high finding, every mandatory review completed, and no unresolved evidence gap.
-- `Safe after listed fixes`: a bounded set of fixes can close every finding and evidence gap.
-- `Keep private`: confidential history, active exposure, unavailable evidence, or an external decision prevents safe publication.
-
-This step is complete only when every finding maps to the verdict and no critical exposure is buried under portfolio polish.
-
-### 6. Remediate only when authorized
-
-- For an exposed credential, contain public access when authorized, require revocation or rotation through its provider, remove it from the current tree, and clean history before republishing.
-- For a personal identifier, making the repository private stops ordinary public access but does not undo prior exposure. Remove it from the current tree and prefer a new clean public snapshot.
-- Do not claim that a force-push alone guarantees removal. Old commit URLs, forks, caches, releases, artifacts, or provider retention may preserve access.
-- For confidential operational projects, keep the original repository private and publish a separate anonymized snapshot with fresh history.
-- Re-scan the clean candidate before changing visibility to public.
-
-This branch is complete only when each authorized fix is validated and the release gate is rerun from step 1. Never inherit the previous verdict after a mutation.
-
-## Output format
-
-Lead with the verdict, then provide:
-
-1. prioritized findings;
-2. current-tree versus Git-history exposure;
-3. automated-scan limitations and manual checks completed;
-4. `Codex can do now`;
-5. `User or provider action required`;
-6. exact validation needed before public release.
+End with an explicit statement that no changes were made. The audit is complete
+only when every finding supports the verdict and the response contains no
+mutation or implied authorization.

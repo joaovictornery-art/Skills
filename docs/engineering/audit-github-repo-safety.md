@@ -10,47 +10,35 @@ npx skills@latest add joaovictornery-art/Skills --skill=audit-github-repo-safety
 
 ## What it does
 
-`audit-github-repo-safety` is a release gate for repositories that may become
-public or be shared with recruiters. It combines a redacted deterministic scan
-with a mandatory semantic review of repository history, screenshots, PDFs,
-generated assets, GitHub surfaces, and public claims.
+`audit-github-repo-safety` performs a read-only review before a repository is
+published or shared. It scans current files and reachable Git history, then
+reviews visuals, confidential context, GitHub surfaces, and public claims that
+automated patterns cannot interpret safely.
 
-The included scanner detects secret candidates, sensitive filenames, valid
-Brazilian CPF and CNPJ values, email addresses, visual files that need review,
-and confidential names or aliases supplied with `--private-term`. Detected
-values are never printed in the report.
+Its report explains each issue in plain language:
 
-## When to reach for it
+- what was found;
+- what it can realistically cause;
+- the smallest recommended change;
+- why that recommendation fits the context;
+- where the evidence is located.
 
-Invoke `$audit-github-repo-safety` manually before making a repository public,
-sharing it as portfolio evidence, or publishing a sanitized replacement.
+## Read-only by design
 
-The skill is deliberately user-invoked because visibility changes, history
-rewrites, credential rotation, deletion, and publication require explicit
-authorization at action time.
+The skill never edits files, installs dependencies, commits, pushes, creates a
+pull request or repository, changes visibility or security settings, rewrites
+history, rotates credentials, deletes data, or triggers a deployment.
 
-## Release gate
+This remains true even when a finding is critical or a prompt asks to audit and
+fix at the same time. Remediation is a separate request made after the user has
+reviewed the report.
 
-The gate scans the current tree and every reachable commit, then requires each
-visual candidate and available GitHub surface to be accounted for. It also
-checks that claims about privacy, production use, ownership, impact, and AI are
-supported by evidence.
+## Risk calibration
 
-It returns one verdict:
+The audit distinguishes current files from historical exposure and considers
+repository visibility, likely audience, whether a credential is active, and
+whether the repository drives a live application. It recommends the smallest
+adequate correction instead of automatically escalating to migration or
+history rewriting.
 
-- `Safe to publish`
-- `Safe after listed fixes`
-- `Keep private`
-
-A clean text scan cannot produce `Safe to publish` while semantic or visual
-evidence remains unreviewed.
-
-## Safety boundary
-
-The skill is read-only by default. It redacts findings and does not commit,
-push, change visibility, rewrite history, delete data, rotate credentials, or
-create a replacement repository without explicit action-time approval.
-
-For operational or confidential history, it prefers retaining the original as
-a private archive and publishing a separate sanitized repository with fresh
-history.
+The response ends by confirming that no changes were made.

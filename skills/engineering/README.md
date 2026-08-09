@@ -6,9 +6,9 @@ Skills for daily code and release work.
 
 Reachable only when the human names the skill.
 
-- **[audit-github-repo-safety](./audit-github-repo-safety/SKILL.md)** — Gate a
-  repository before public release by scanning its current tree, reachable
-  history, visual evidence, GitHub surfaces, and public claims.
+- **[audit-github-repo-safety](./audit-github-repo-safety/SKILL.md)** — Audit a
+  repository's current tree, history, visuals, GitHub surfaces, and public
+  claims; explain risks and recommendations without changing anything.
 
 - **[code-quality-check](./code-quality-check/SKILL.md)** — Run a risk-scaled,
   review-only quality gate and report separate PR and deploy readiness.
