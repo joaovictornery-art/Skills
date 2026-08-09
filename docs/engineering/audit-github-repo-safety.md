@@ -15,6 +15,10 @@ published or shared. It scans current files and reachable Git history, then
 reviews visuals, confidential context, GitHub surfaces, and public claims that
 automated patterns cannot interpret safely.
 
+Before it inspects anything, the skill names the repository suggested by the
+current working directory and asks whether to review that repository, another
+one, or several. It waits for explicit confirmation before continuing.
+
 Its report explains each issue in plain language:
 
 - what was found;

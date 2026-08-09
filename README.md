@@ -28,8 +28,8 @@ Skills for code and release work.
 **User-invoked**
 
 - **[audit-github-repo-safety](./skills/engineering/audit-github-repo-safety/SKILL.md)** —
-  Audit a repository's current tree, history, visuals, GitHub surfaces, and
-  public claims; explain risks and recommendations without changing anything.
+  Confirm the target first, then audit its current tree, history, visuals,
+  GitHub surfaces, and public claims without changing anything.
 
 - **[code-quality-check](./skills/engineering/code-quality-check/SKILL.md)** —
   Run a risk-scaled, review-only quality gate and report separate PR and deploy
