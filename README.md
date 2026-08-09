@@ -27,6 +27,10 @@ Skills for code and release work.
 
 **User-invoked**
 
+- **[audit-github-repo-safety](./skills/engineering/audit-github-repo-safety/SKILL.md)** —
+  Gate a repository before public release by scanning its current tree, reachable
+  history, visual evidence, GitHub surfaces, and public claims.
+
 - **[code-quality-check](./skills/engineering/code-quality-check/SKILL.md)** —
   Run a risk-scaled, review-only quality gate and report separate PR and deploy
   readiness.
