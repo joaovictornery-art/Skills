@@ -1,6 +1,6 @@
 interface:
-  display_name: "GitHub Repository Release Gate"
-  short_description: "Gate a repository before public release"
-  default_prompt: "Use $audit-github-repo-safety as the release gate for this repository before I publish or share it."
+  display_name: "Read-Only GitHub Safety Audit"
+  short_description: "Explain repository risks without changing it"
+  default_prompt: "Use $audit-github-repo-safety to audit this repository, explain the risks simply, and make no changes."
 policy:
   allow_implicit_invocation: false
