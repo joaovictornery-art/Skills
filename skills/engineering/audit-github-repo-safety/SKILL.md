@@ -7,7 +7,8 @@ disable-model-invocation: true
 # Audit GitHub repository safety
 
 Perform an **inspection only**. Explain what is present, what it can cause, and
-the smallest adequate change. Never remediate during this skill.
+the smallest adequate change. Confirm the repository scope before inspecting
+anything, and never remediate during this skill.
 
 ## Non-negotiable boundary
 
@@ -26,17 +27,37 @@ the smallest adequate change. Never remediate during this skill.
 This boundary is absolute, including when a finding is critical or the user has
 previously authorized changes elsewhere in the conversation.
 
-## 1. Establish the target
+## 1. Confirm the target and stop
 
-Resolve the repository root, branch, working-tree status, remotes, GitHub
-visibility, intended audience, and intended publication action. Read repository
-instructions and privacy documentation.
+Before any audit, identify only the repository candidate implied by the current
+working directory. Use the folder name, repository root, and configured origin
+URL when available; do not inspect repository contents, history, or GitHub
+surfaces yet.
 
-Complete this step when one repository and one intended audience are known. If
-the target is ambiguous, ask for it without inspecting or changing another
-repository.
+Ask one concise question in the user's language that names the candidate and
+offers three scopes: this repository, another repository, or multiple
+repositories. For example:
 
-## 2. Run the read-only scan
+> It looks like I am in `<repository>`. Should I audit this repository, another
+> one, or several? If another repository is involved, send its path or URL.
+
+Always ask for this confirmation, even when the invocation already names a
+repository. Then stop and wait for the user's reply. Do not combine the question
+with scan results or begin the audit in the same turn.
+
+Complete this gate only when the user has explicitly confirmed every target.
+
+## 2. Establish the confirmed scope
+
+For each confirmed repository, resolve the root, branch, working-tree status,
+remotes, GitHub visibility, intended audience, and intended publication action.
+Read repository instructions and privacy documentation.
+
+Complete this step when every repository and its intended audience are known.
+If the user confirmed several repositories, audit and report them separately so
+evidence and recommendations do not get mixed.
+
+## 3. Run the read-only scan
 
 Run from any directory:
 
@@ -52,7 +73,7 @@ If history is truncated, rerun with `--max-history-commits` large enough to
 cover every reachable commit. Complete this step only when the current tree and
 reachable history were scanned or the uncovered range is reported as a limit.
 
-## 3. Inspect what patterns cannot understand
+## 4. Inspect what patterns cannot understand
 
 Review screenshots, PDFs, recordings, diagrams, exports, logs, fixtures,
 generated client assets, real names, company or customer terms, internal URLs,
@@ -67,7 +88,7 @@ user.
 Complete this step when each relevant visual and public claim is reviewed or
 listed under `What I could not confirm`.
 
-## 4. Calibrate the risk
+## 5. Calibrate the risk
 
 Use technical severity as supporting detail:
 
@@ -95,7 +116,7 @@ Recommend the smallest change that adequately reduces the risk. Prefer a local
 edit over a repository migration when it is sufficient. Treat changing a live
 repository, deployment, or public profile as a separate decision.
 
-## 5. Return a simple report
+## 6. Return a simple report
 
 Reply in the user's language. Lead with one verdict:
 
