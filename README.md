@@ -51,6 +51,14 @@ Skills for code and release work.
 
 General workflow skills.
 
+**User-invoked**
+
+- **[como-e-que-e](./skills/productivity/como-e-que-e/SKILL.md)** â€”
+  Re-pitch the last answer in clear Brazilian Portuguese when it missed the
+  point, skipped context, or came out in English.
+
+**Model-invoked**
+
 - None yet.
 
 ## Repository layout

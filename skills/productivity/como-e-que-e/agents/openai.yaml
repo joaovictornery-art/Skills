@@ -1,0 +1,6 @@
+interface:
+  display_name: "Como é que é?"
+  short_description: "Reexplica respostas confusas em portugues"
+  default_prompt: "Use $como-e-que-e para refazer a ultima resposta em portugues claro."
+policy:
+  allow_implicit_invocation: false
