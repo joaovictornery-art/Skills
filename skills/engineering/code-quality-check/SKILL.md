@@ -1,6 +1,6 @@
 ---
 name: code-quality-check
-description: Review-only, risk-scaled quality gate with evidence-backed findings and separate PR/deploy readiness.
+description: Risk-scaled quality gate, review-only by default, with evidence-backed findings and separate PR/deploy readiness. Use fix mode only when the user explicitly asks to apply corrections.
 disable-model-invocation: true
 ---
 
@@ -98,8 +98,17 @@ every failure has a classification.
 Load [references/review.md](references/review.md). Review the complete change
 surface in one integrated pass by default, while keeping the Standards and
 Spec axes distinct. Map each changed behavior to both axes and its profiles
-during that pass; do not repeat file traversal separately for each axis. Use
-independent parallel review only when the user asks for it.
+during that pass; do not repeat file traversal separately for each axis.
+
+Prefer an independent cold-review subagent when subagent tools are available.
+Start it without conversation history or implementation rationale, and pass
+only the repository path, fixed point, changed-file inventory, spec sources,
+standards sources, and the loaded profile list. Ask the subagent for
+evidence-backed findings only, with file/line references, validation signals,
+and confidence. Treat the subagent output as review evidence to verify and
+integrate, not as an automatic verdict. Fall back to a local integrated review
+when subagent tools are unavailable, the repository cannot be shared safely, or
+the next step is blocked on immediate local inspection.
 
 For each plausible defect class, probe the closest boundary or failure path.
 Expand to sibling inputs, roles, retries, or partial failures only when the
