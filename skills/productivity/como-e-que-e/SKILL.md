@@ -1,6 +1,7 @@
 ---
 name: como-e-que-e
 description: Refaca a ultima resposta quando ela nao ficou clara, ficou distante do pedido, pulou contexto, ou veio em ingles. Use para repassar a explicacao em portugues simples, direto e alinhado ao vocabulario do projeto.
+disable-model-invocation: true
 ---
 
 # Como é que é?
