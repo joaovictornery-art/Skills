@@ -59,6 +59,16 @@ evidence and recommendations do not get mixed.
 
 ## 3. Run the read-only scan
 
+Prefer an independent cold-audit subagent when subagent tools are available
+after the user confirms scope. Start it without conversation history or prior
+implementation rationale, and pass only the confirmed repository path or URL,
+intended audience/publication context, known private terms, and this skill's
+read-only boundary. Require the subagent to return plain-language risks,
+evidence locations, and uncertainty, with no remediation. Verify and calibrate
+its findings before reporting them. Fall back to local inspection when
+subagent tools are unavailable, the repository cannot be shared safely, or the
+audit depends on credentials/session state only available locally.
+
 Run from any directory:
 
 ```powershell
@@ -126,11 +136,11 @@ Reply in the user's language. Lead with one verdict:
 
 For each distinct finding, group duplicates and explain:
 
-1. **What I found** — plain language first; technical term second when useful.
-2. **What it can cause** — a realistic consequence, without alarmism.
-3. **My recommendation** — the smallest adequate next step.
-4. **Why** — the reasoning and tradeoff.
-5. **Where** — current file, Git history, or GitHub surface.
+1. **What I found** - plain language first; technical term second when useful.
+2. **What it can cause** - a realistic consequence, without alarmism.
+3. **My recommendation** - the smallest adequate next step.
+4. **Why** - the reasoning and tradeoff.
+5. **Where** - current file, Git history, or GitHub surface.
 
 List `What I could not confirm` only when it changes the verdict. Put optional
 technical detail after the simple explanation, not before it.
