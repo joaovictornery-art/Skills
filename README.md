@@ -55,7 +55,8 @@ General workflow skills.
 
 - **[como-e-que-e](./skills/productivity/como-e-que-e/SKILL.md)** â€”
   Re-pitch the last answer in clear Brazilian Portuguese when it missed the
-  point, skipped context, or came out in English.
+  point, skipped context, or came out in English, adding a short analogy when
+  it helps explain an abstract concept.
 
 **Model-invoked**
 
