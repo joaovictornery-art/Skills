@@ -4,8 +4,8 @@ Use this reference when simplification involves dashboards, KPIs, filters, aggre
 
 ## Keep the concepts separate
 
-- **Metric:** the business question and calculation, such as “interactive sessions in the selected period.”
-- **Dimension:** an attribute used to split data, such as date, profile, presentation, or mode.
+- **Metric:** the business question and calculation, such as “completed orders in the selected period.”
+- **Dimension:** an attribute used to split data, such as date, region, product category, or sales channel.
 - **Filter:** the user's selection of dimension values.
 - **Aggregate:** a smaller, precomputed representation that answers the same metric without rereading every source record.
 - **Projection or materialization:** persisted derived data prepared before an interactive read.
