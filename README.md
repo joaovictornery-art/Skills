@@ -60,7 +60,9 @@ General workflow skills.
 
 **Model-invoked**
 
-- None yet.
+- **[simplifier](./skills/productivity/simplifier/SKILL.md)** — Explain complex
+  technical, data, product, or process topics in plain language with a faithful
+  analogy, concrete example, explicit delivery state, and correctness guardrail.
 
 ## Repository layout
 

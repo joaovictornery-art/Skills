@@ -1,0 +1,4 @@
+interface:
+  display_name: "Simplifier"
+  short_description: "Explain complex topics without losing accuracy"
+  default_prompt: "Use $simplifier to explain this topic in plain language with one faithful analogy and a concrete example."
